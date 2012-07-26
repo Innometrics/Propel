@@ -223,14 +223,14 @@ class PropelTableComparator
     public function compareIndices($caseInsensitive = false)
     {
         $indexDifferences = 0;
-        $fromTableIndices = array_merge($this->getFromTable()->getIndices(), $this->getFromTable()->getUnices());
-        $toTableIndices = array_merge($this->getToTable()->getIndices(), $this->getToTable()->getUnices());
+        $fromTableIndices_ = $fromTableIndices = array_merge($this->getFromTable()->getIndices(), $this->getFromTable()->getUnices());
+        $toTableIndices_   = $toTableIndices   = array_merge($this->getToTable()->getIndices(),   $this->getToTable()->getUnices());
 
         foreach ($toTableIndices as $toTableIndexPos => $toTableIndex) {
             foreach ($fromTableIndices as $fromTableIndexPos => $fromTableIndex) {
                 if (PropelIndexComparator::computeDiff($fromTableIndex, $toTableIndex, $caseInsensitive) === false) {
-                    unset($fromTableIndices[$fromTableIndexPos]);
-                    unset($toTableIndices[$toTableIndexPos]);
+                    unset($fromTableIndices_[$fromTableIndexPos]);
+                    unset($toTableIndices_[$toTableIndexPos]);
                 } else {
                     $test = $caseInsensitive ?
                         strtolower($fromTableIndex->getName()) == strtolower($toTableIndex->getName()) :
@@ -238,20 +238,20 @@ class PropelTableComparator
                     if ($test) {
                         // same name, but different columns
                         $this->tableDiff->addModifiedIndex($fromTableIndex->getName(), $fromTableIndex, $toTableIndex);
-                        unset($fromTableIndices[$fromTableIndexPos]);
-                        unset($toTableIndices[$toTableIndexPos]);
+                        unset($fromTableIndices_[$fromTableIndexPos]);
+                        unset($toTableIndices_[$toTableIndexPos]);
                         $indexDifferences++;
                     }
                 }
             }
         }
 
-        foreach ($fromTableIndices as $fromTableIndexPos => $fromTableIndex) {
+        foreach ($fromTableIndices_ as $fromTableIndexPos => $fromTableIndex) {
             $this->tableDiff->addRemovedIndex($fromTableIndex->getName(), $fromTableIndex);
             $indexDifferences++;
         }
 
-        foreach ($toTableIndices as $toTableIndexPos => $toTableIndex) {
+        foreach ($toTableIndices_ as $toTableIndexPos => $toTableIndex) {
             $this->tableDiff->addAddedIndex($toTableIndex->getName(), $toTableIndex);
             $indexDifferences++;
         }

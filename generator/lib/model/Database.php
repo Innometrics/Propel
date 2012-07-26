@@ -493,7 +493,7 @@ class Database extends ScopedElement
     if ($bdata instanceof Behavior) {
       $behavior = $bdata;
       $behavior->setDatabase($this);
-      $this->behaviors[$behavior->getName()] = $behavior;
+      $this->behaviors[] = $behavior; 
 
       return $behavior;
     } else {
@@ -522,7 +522,11 @@ class Database extends ScopedElement
      */
     public function hasBehavior($name)
     {
-        return array_key_exists($name, $this->behaviors);
+		foreach ($this->behaviors as $behavior) { 
+ 	        if ($behavior->getName() == $name) { 
+ 		        return true; 
+			} 
+		} 
     }
 
   /**
