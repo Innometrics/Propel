@@ -14,8 +14,7 @@
   },
   "include-path": ["runtime/lib", "generator/lib"],
   "require": {
-    "php": ">=5.2.4",
-    "innometrics/phing": "dev-master"
+    "php": ">=5.2.4"
   },
   "extra": {
     "branch-alias": {
